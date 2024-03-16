@@ -1,44 +1,45 @@
 import java.io.*;
- import java.util.*;
+import java.util.*;
 
 
-    public class Main {
-        static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+public class Main {
 
-        static int []arr;
-        static int []cnt;
-        public static void main(String[] args) throws IOException {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            int k = Integer.parseInt(st.nextToken());
-            arr = new int[n];
-            cnt = new int[100001];
-            st = new StringTokenizer(br.readLine());
-            for(int i=0;i<n;i++)
-                arr[i] = Integer.parseInt(st.nextToken());
 
-            int l =0, r= 0;
-            int ans = 0 ;
-            while(l<=r)
-            {
-              if(r<=n-1 &&cnt[arr[r]] <k)
-              {
-                  cnt[arr[r]]++;
-                  r++;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-              }
-              else if(cnt[arr[r]] == k)
-              {
-                  cnt[arr[l]]--;
-                  l++;
-              }
-
-                ans = Math.max(ans, r - l);
-                if(r == n)
-                    break;
-            }
-            System.out.println(ans);
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        int[]arr = new int[N+1];
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        int i = 0;
+        int j = 0;
+        int[]check = new int[100001];
+        int out = -1;
+
+        while(i<=j){
+            int t = arr[j];
+
+            if(j<N && check[t] < K){
+                check[t]++;
+                j++;
+            }else if(check[t] == K){
+                check[arr[i]]--;
+                i++;
+            }
+//            System.out.println(i + " " + j + " " + check[t]);
+            out = Math.max(out, j - i);
+            if(j==N)break;
+        }
+
+        System.out.println(out);
     }
+
+
+}
