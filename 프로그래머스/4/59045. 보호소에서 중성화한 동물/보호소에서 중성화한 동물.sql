@@ -1,6 +1,4 @@
--- 코드를 입력하세요
-SELECT i.ANIMAL_ID,	i.ANIMAL_TYPE,	i.NAME
-from (select * from ANIMAL_INS where SEX_UPON_INTAKE like ("%Intact%")) as i,
-    (select * from ANIMAL_OUTS where SEX_UPON_OUTCOME not like ("%Intact%")) as o
-where i.ANIMAL_ID = o.ANIMAL_ID
-order by i.ANIMAL_ID
+select ANIMAL_INS.ANIMAL_ID,	ANIMAL_INS.ANIMAL_TYPE,	ANIMAL_INS.NAME
+from ANIMAL_INS join ANIMAL_OUTS on ANIMAL_INS.ANIMAL_ID = ANIMAL_OUTS.ANIMAL_ID
+where SEX_UPON_INTAKE != SEX_UPON_OUTCOME
+order by ANIMAL_INS.ANIMAL_ID
