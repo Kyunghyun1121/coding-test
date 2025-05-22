@@ -1,39 +1,50 @@
+import java.util.*;
 class Solution {
+    
     public int[] solution(int[] sequence, int k) {
         int[] answer = new int[2];
-
-        int[]dp = new int[sequence.length+1];
-        dp[0] = sequence[0];
         
-        for(int i = 1; i < sequence.length; i++){
-            dp[i] = dp[i-1] + sequence[i];
-        }
-        
-        int minCount = 1000001;
-        /*for(int i = 0; i < sequence.length; i++){
-            for(int j = i; j < sequence.length; j++){
-                int sum = dp[j] - dp[i] + sequence[i];
-                //System.out.println(i + " " + j + " " + sum + " " + minCount);
-                if(sum == k && minCount > j - i + 1){
-                    minCount = j - i + 1;
-                    answer[0] = i; answer[1] = j;
+        int remStart = 0;
+        int remEnd = 0;
+        int minLen = 1000001;
+        int sum = sequence[0];
+        while(remStart <= remEnd && remEnd < sequence.length){
+            //System.out.println(remStart + " " + remEnd + " " + sum + " " + minLen);
+            if(remStart == remEnd)sum = sequence[remEnd];
+            
+            if(sum < k){
+                remEnd++;
+                if(remEnd < sequence.length)sum += sequence[remEnd];
+            }else if(sum == k){
+                if(minLen > remEnd - remStart){
+                    answer[0] = remStart;
+                    answer[1] = remEnd;
+                    minLen = remEnd - remStart;
                 }
+                remEnd++;
+                if(remEnd < sequence.length)sum += sequence[remEnd];
+            }else{
+                sum -= sequence[remStart];
+                remStart++;
             }
-        }*/
-        int sum = 0;
-        int start = 0; int end = 0;
-        while(start <= end && end < sequence.length){
-                sum = dp[end] - dp[start] + sequence[start];
-                if(sum == k && minCount > end-start+1){
-                    minCount = end-start+1;
-                    answer[0] = start; answer[1] = end;
-                }else if(sum < k){
-                    end++;
-                }else{
-                    start++;
-                }
         }
-
+        
+        remEnd = sequence.length - 1;
+        while(remStart <= remEnd){
+            //System.out.println(remStart + " " + remEnd + " " + sum + " " + minLen);
+            
+            if(sum == k){
+                if(minLen > remEnd - remStart){
+                    answer[0] = remStart;
+                    answer[1] = remEnd;
+                    minLen = remEnd - remStart;
+                }
+                break;
+            }
+            sum -= sequence[remStart];
+            remStart++;
+        }
+        
         return answer;
     }
 }
