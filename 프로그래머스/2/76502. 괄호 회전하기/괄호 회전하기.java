@@ -4,28 +4,37 @@ class Solution {
     public int solution(String s) {
         int answer = 0;
         
-        
         for(int i = 0; i < s.length(); i++){
-            String temp = s.substring(i);
-            if(i != 0)temp += s.substring(0, i);
-            Stack<Character>arr = new Stack<>();
-            //System.out.println(temp);
+            if(isRight(s))answer++;
             
-            for(int j = 0; j < temp.length(); j++){
-                if(!arr.isEmpty() && check(arr.peek(),temp.charAt(j))) arr.pop();
-                else arr.push(temp.charAt(j));
-            }
-            
-            if(arr.isEmpty())answer++;
+            s = s.substring(1) + s.substring(0,1);
         }
         
         return answer;
     }
     
-    public boolean check(char a, char b){
-        if((a == '[' && b == ']') || (a == '{' && b == '}') || (a == '(' && b == ')')){
-            return true;
+    
+    public boolean isRight(String s){
+        Stack<Character>find = new Stack<>();
+        for(char i : s.toCharArray()){
+            if(i == ']'){
+                if(find.isEmpty())return false;
+                if(find.peek() == '[') find.pop();
+                else find.push(i);
+            }else if(i == '}'){
+                if(find.isEmpty())return false;
+                if(find.peek() == '{') find.pop();
+                else find.push(i);
+            }else if( i == ')'){
+                if(find.isEmpty())return false;
+                if(find.peek() == '(') find.pop();
+                else find.push(i);
+            }else{
+                find.push(i);
+            }
         }
-        return false;
+        
+        if(find.isEmpty())return true;
+        else return false;
     }
 }
