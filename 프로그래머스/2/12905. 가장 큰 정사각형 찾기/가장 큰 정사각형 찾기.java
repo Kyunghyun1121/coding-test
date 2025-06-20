@@ -1,35 +1,43 @@
-import java.util.*;
 class Solution
 {
-    public int solution(int [][]board)
+    public int solution(int[][]matrix)
     {
-        int answer = 1234; int y = board.length;
-        int x = board[0].length;
-        int avail = 1; 
-        int[][]dp = new int[y][x]; int max = 0;
-        for(int i = 0; i< y; i++){
-            for(int j = 0; j < x; j++){
-                if(i==0 || j==0){
-                    dp[i][j] = board[i][j]; 
-                    max = Math.max(dp[i][j], max);
-                    continue;
-                }
-                
-                if(board[i][j] == 1){
-                    int min = Math.min(dp[i-1][j],Math.min(dp[i][j-1],dp[i-1][j-1]));
-                    if(min==0)dp[i][j] = 1;
-                    else dp[i][j] = min+1;
-                    max = Math.max(dp[i][j], max);
-                }else{
-                    dp[i][j] = 0;
+        int answer = 0;
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int[][]dp = new int[m+1][n+1];
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 1)
+                    dp[i][j] = 1;
+            }
+        }
+
+        for(int i = 1; i < m; i++){
+            for(int j = 1 ; j < n; j++){
+
+                int t = matrix[i-1][j] + matrix[i][j-1] 
+                + matrix[i-1][j-1] + matrix[i][j];
+
+                if(t == 4){
+                    int min = Math.min(
+                        Math.min(dp[i-1][j-1], dp[i-1][j]), dp[i][j-1]);
+                    dp[i][j] = min + 1;
                 }
                 
             }
         }
-        
 
-        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                dp[i][j] *= dp[i][j];
+                answer = Math.max(dp[i][j], answer);
+            }
+        }
 
-        return max*max;
+        return answer;
     }
 }
