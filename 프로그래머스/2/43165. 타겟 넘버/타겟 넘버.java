@@ -1,28 +1,21 @@
 import java.util.*;
 
 class Solution {
-    int t;
-    int answer = 0;
+    int count = 0;
     
-    
-    public void circle(int count, int sum, int[] numbers){
-        if(count == numbers.length){
-            if(t == sum)answer++;
-            
+    public void dfs(int num, int sum, int target, int[]numbers){
+        if(num == numbers.length){
+            if(sum == target) count++;
             return;
         }
         
-        circle(count + 1, sum + numbers[count], numbers);
-        circle(count + 1, sum - numbers[count], numbers);
+        dfs(num+1, sum + numbers[num], target, numbers);
+        dfs(num+1, sum - numbers[num], target, numbers);
+        
     }
     
     public int solution(int[] numbers, int target) {
-        
-        t = target;
-        circle(0,0,numbers);
-        
-        
-        
-        return answer;
+        dfs(0,0,target,numbers);
+        return count;
     }
 }
