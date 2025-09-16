@@ -1,7 +1,7 @@
-select USER_ID, NICKNAME, sum(PRICE) as TOTAL_SALES
-from USED_GOODS_BOARD join USED_GOODS_USER on 
-    USED_GOODS_BOARD.WRITER_ID = USED_GOODS_USER.USER_ID
-where USED_GOODS_BOARD.STATUS like "DONE"
-group by USED_GOODS_USER.USER_ID
+-- 코드를 입력하세요
+SELECT b.USER_ID, NICKNAME, sum(PRICE) as TOTAL_SALES
+from USED_GOODS_BOARD as a join USED_GOODS_USER as b on a.WRITER_ID = b.USER_ID
+where a.STATUS like "DONE"
+group by a.WRITER_ID
 having sum(PRICE) >= 700000
-order by TOTAL_SALES asc
+order by sum(PRICE) asc
