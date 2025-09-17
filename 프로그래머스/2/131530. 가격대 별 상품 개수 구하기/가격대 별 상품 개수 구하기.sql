@@ -1,0 +1,5 @@
+SELECT PRICE_GROUP * 10000 as PRICE_GROUP, count(PRODUCT_ID) as PRODUCTS
+from (select PRODUCT_ID, truncate(PRICE / 10000, 0) as PRICE_GROUP, PRICE
+      from PRODUCT) as a
+group by PRICE_GROUP
+order by PRICE_GROUP asc
