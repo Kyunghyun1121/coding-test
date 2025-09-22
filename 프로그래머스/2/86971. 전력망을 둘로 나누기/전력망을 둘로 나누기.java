@@ -1,50 +1,46 @@
 import java.util.*;
 
 class Solution {
-    
-    int all = 0;
-    ArrayList<ArrayList<Integer>>wire = new ArrayList<>();
-    int out = 100000;
-    
+
     public int solution(int n, int[][] wires) {
-        int answer = -1;
-        all = n;
-        int root = -1;
-        
-        for(int i = 0; i <= n; i++){
-            wire.add(new ArrayList<>());
+        int answer = 100000;
+        ArrayList<ArrayList<Integer>>list = new ArrayList<>();
+        for(int i = 0; i <= n; i++) list.add(new ArrayList<Integer>());
+        for(int i = 0; i < wires.length; i++){
+            list.get(wires[i][0]).add(wires[i][1]);
+            list.get(wires[i][1]).add(wires[i][0]);
         }
         
         for(int i = 0; i < wires.length; i++){
-            int one = wires[i][0];
-            int two = wires[i][1];
-            wire.get(one).add(two);
-            wire.get(two).add(one);
-        }
-        
-        root = 1;
-        for(int i = 0; i <= n; i++){
-            if(root == i)continue;
-            if(wire.get(root).size() < wire.get(i).size())root = i;
-        }
-        int t = dfs(root, new boolean[n+1]);
-        
-        return out;
-    }
-    
-    
-    public int dfs(int num, boolean[]rem){
-        int answer = 1;
-        rem[num] = true;
-        for(int t : wire.get(num)){
-            if(!rem[t]){
-                answer += dfs(t, rem);
+            boolean[]visit = new boolean[n + 1];
+            list.get(wires[i][0]).remove((Object)wires[i][1]);
+            list.get(wires[i][1]).remove((Object)wires[i][0]);
+            ArrayDeque<Integer>q = new ArrayDeque<>();
+            q.add(1);
+            visit[1] = true;
+            int one = 0;
+            while(!q.isEmpty()){
+                int t = q.remove();
+                one++;
+                for(int temp : list.get(t)){
+                    if(!visit[temp]){
+                        visit[temp] = true;
+                        q.add(temp);
+                    }
+                }
             }
+            
+            answer = Math.min(answer, Math.abs((n - one) - one));
+            
+            
+            list.get(wires[i][0]).add(wires[i][1]);
+            list.get(wires[i][1]).add(wires[i][0]);
         }
-        rem[num] = false;
-        out = Math.min(out, Math.abs(all - answer - answer));
+        
+        
         
         return answer;
-        
     }
+
+    
 }
