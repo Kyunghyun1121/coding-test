@@ -2,49 +2,30 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 10000;
+        if(s.length()==1)return 1;
         
-        int cutLen = s.length();
-        while(cutLen > 0){
-            int len = 0;
-            if(cutLen > s.length() / 2){
-                len = s.length();
-            }else{
-                int start = cutLen;
-                int end = start + cutLen;
-                String t = "";
+        for(int i = 1; i < s.length(); i++){
+            StringBuilder temp = new StringBuilder();
+            for(int j = 0; j + i <= s.length(); ){
                 int count = 1;
-                String compare = s.substring(0, cutLen);
-                //System.out.println(compare);
-                //if(end == s.length()) t += compare;
-                
-                while(end <= s.length()){
-                   // System.out.println(cutLen + " " + t);
-                    
-                    String temp = s.substring(start, end);
-                    if(!compare.equals(temp)){
-                        //System.out.println(compare + " : " + temp);
-                        if(count!=1)t += count;
-                        t += compare;
-                        compare = temp;
-                        //System.out.println(compare);
-                        count = 0;
-                    }
-                    
-                    start = end;
-                    end = start + cutLen;
+                String t = s.substring(j, j + i);
+                j+=i;
+                while(j + i <= s.length() && t.equals(s.substring(j, j + i))){
+                    j+=i;
                     count++;
                 }
-                if(count > 1) t+=count;
                 
-                t += compare;
-                t += s.substring(start, s.length());
-                //System.out.println(cutLen + " " + t);
+                //System.out.println("i: " + i + " j : " + j + " "+count+" " + t);
+                if(count!=1) temp.append(count).append(t);
+                else temp.append(t);
                 
-                len = t.length();
+                if(j + i > s.length() && s.substring(j).length() < i){
+                    temp.append(s.substring(j));
+                    break;
+                }  
             }
-            
-            answer = Math.min(answer, len);
-            cutLen--;
+            //System.out.println(temp.toString());
+            answer = Math.min(answer, temp.toString().length());
         }
         
         return answer;
